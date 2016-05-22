@@ -4,8 +4,8 @@ import RealmSwift
 //
 // TODOs:
 //
-// * [x] In `fetch(_)`: Retrieve messages from API and store objects in realm
-// * [x] in `postMessage(_)` show how instead of calling the network just store in realm
+// * [ ] In `fetch(_)`: Retrieve messages from API and store objects in realm
+// * [ ] in `postMessage(_)` show how instead of calling the network just store in realm
 //
 
 class DataController {
@@ -36,49 +36,10 @@ class DataController {
     }
     
     @objc private func fetch(timer: NSTimer) {
-        api.getMessages { jsonObjects in
-            let realm = try! Realm()
-            
-            try! realm.write {
-                for object in jsonObjects {
-                    let url = object["image"] as! String
-                    let photo = realm.objectForPrimaryKey(Photo.self, key: url) ?? Photo(value: ["url": url])
-                    
-                    let message = Message(value: object)
-                    message.photo = photo
-                    realm.add(message, update: true)
-                }
-            }
-            
-            print("saved \(jsonObjects.count) new messages")
-        }
+        //<#Needs to be implemented.#>
     }
         
     func postMessage(message: String) {
-        let meUrl = "me@2x.png"
-        let newId = NSUUID().UUIDString
-        
-        let realm = try! Realm()
-
-        let new = Message()
-        new.id = newId
-        new.message = message
-        new.name = "me"
-        new.photo = realm.objectForPrimaryKey(Photo.self, key: meUrl) ?? Photo(value: ["url": meUrl])
-        new.outgoing = true
-        
-        try! realm.write {
-            realm.add(new)
-        }
-        
-        // faux sending - it just changes the message state in 5secs
-        delay(seconds: 5, completion: {
-            let realm = try! Realm()
-            if let message = realm.objectForPrimaryKey(Message.self, key: newId) {
-                try! realm.write {
-                    message.sent = true
-                }
-            }
-        })
+        //<#Needs to be implemented.#>
     }
 }
