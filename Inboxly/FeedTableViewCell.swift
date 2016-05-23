@@ -23,7 +23,12 @@ class FeedTableViewCell: UITableViewCell {
     func configureWithMessage(message: Message) {
         self.message = message
         
-        //<#Needs to be implemented.#>
+        nameLabel.text = message.name
+        messageLabel.text = message.message
+        likeButton.selected = message.favorite
+        if let imageData = message.photo?.image {
+            photoView.image = UIImage(data: imageData)
+        }
     }
     
     @IBAction func toggleLike(sender: AnyObject) {
