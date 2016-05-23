@@ -18,7 +18,13 @@ class FeedTableViewCell: UITableViewCell {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var likeButton: UIButton!
     
-    var message: Message?
+    var message: Message? {
+        didSet {
+            photoSubscription?.stop()
+        }
+    }
+
+    var photoSubscription: NotificationToken?
 
     func configureWithMessage(message: Message) {
         self.message = message
@@ -28,10 +34,23 @@ class FeedTableViewCell: UITableViewCell {
         likeButton.selected = message.favorite
         if let imageData = message.photo?.image {
             photoView.image = UIImage(data: imageData)
+        } else {
+            let realm = try! Realm()
+            let photos = realm.objects(Photo).filter("url = %@ && image != nil", message.photo!.url)
+
+            photoSubscription = photos.addNotificationBlock { [weak self] _ in
+                if let imageData = photos.first?.image {
+                    self?.photoView.image = UIImage(data: imageData)
+                }
+            }
         }
     }
     
     @IBAction func toggleLike(sender: AnyObject) {
         //<#Needs to be implemented.#>
+    }
+
+    deinit {
+        photoSubscription?.stop()
     }
 }
