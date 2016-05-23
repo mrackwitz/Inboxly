@@ -4,7 +4,7 @@ import RealmSwift
 //
 // TODOs:
 //
-// * [ ] In `fetch(_)`: Retrieve messages from API and store objects in realm
+// * [x] In `fetch(_)`: Retrieve messages from API and store objects in realm
 // * [ ] in `postMessage(_)` show how instead of calling the network just store in realm
 //
 
@@ -36,7 +36,22 @@ class DataController {
     }
     
     @objc private func fetch(timer: NSTimer) {
-        //<#Needs to be implemented.#>
+        api.getMessages { jsonObjects in
+            let realm = try! Realm()
+
+            try! realm.write {
+                for object in jsonObjects {
+                    let url = object["image"] as! String
+                    let photo = realm.objectForPrimaryKey(Photo.self, key: url) ?? Photo(value: ["url": url])
+
+                    let message = Message(value: object)
+                    message.photo = photo
+                    realm.add(message, update: true)
+                }
+            }
+
+            print("[DataController] Saved \(jsonObjects.count) new messages")
+        }
     }
         
     func postMessage(message: String) {
