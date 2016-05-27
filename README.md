@@ -1,4 +1,6 @@
-<center>![](https://raw.githubusercontent.com/mrackwitz/Inboxly/assets/curly-appicon.png)</center>
+<h3 align="center">
+  <img src="https://raw.githubusercontent.com/mrackwitz/Inboxly/assets/curly-appicon.png" alt="Inboxly Logo" />
+</h3>
 
 # Inboxly
 ### A little demo how to build a **Reactive App** using [**Realm**](https://realm.io)
