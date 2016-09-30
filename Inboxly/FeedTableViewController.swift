@@ -44,6 +44,7 @@ class FeedTableViewController: UITableViewController {
                         self.tableView.reloadRowsAtIndexPaths(modifications.map { NSIndexPath(forRow: $0, inSection: i) },
                             withRowAnimation: .Automatic)
                         self.tableView.endUpdates()
+                        self.tableView.reloadData()
                         break
                     case .Error(let err):
                         // An error occurred while opening the Realm file on the background worker thread
